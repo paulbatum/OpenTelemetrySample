@@ -1,4 +1,4 @@
-namespace ConsoleClient
+namespace Common
 {
     public class WeatherForecast
     {

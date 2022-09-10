@@ -1,3 +1,8 @@
+using Common;
+using OpenTelemetry.Exporter.Geneva;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
+
 namespace AppB
 {
     public class Program
@@ -12,6 +17,8 @@ namespace AppB
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.ConfigureOpenTelemetry("AppB");
 
             var app = builder.Build();
 

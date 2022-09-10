@@ -1,3 +1,7 @@
+
+
+using Common;
+
 namespace AppA
 {
     public class Program
@@ -18,6 +22,9 @@ namespace AppA
             {
                 client.BaseAddress = new Uri("https://localhost:7107");
             });
+
+            builder.Services.ConfigureOpenTelemetry("AppA");
+
 
             var app = builder.Build();
 
