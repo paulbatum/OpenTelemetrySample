@@ -1,7 +1,4 @@
 using Common;
-using OpenTelemetry.Exporter.Geneva;
-using OpenTelemetry.Resources;
-using OpenTelemetry.Trace;
 
 namespace AppB
 {
@@ -18,7 +15,7 @@ namespace AppB
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.ConfigureOpenTelemetry("AppB");
+            builder.ConfigureOpenTelemetry("AppB");
 
             var app = builder.Build();
 
@@ -35,6 +32,8 @@ namespace AppB
 
 
             app.MapControllers();
+
+
 
             app.Run();
         }

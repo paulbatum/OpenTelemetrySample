@@ -1,7 +1,10 @@
 ﻿using System.Diagnostics;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using OpenTelemetry;
 using OpenTelemetry.Exporter.Geneva;
+using OpenTelemetry.Logs;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 
@@ -9,11 +12,24 @@ namespace Common
 {
     public static class OpenTelemetryConfiguration
     {
+        private const string OpenTelemetryEtwSession = "EtwSession=OpenTelemetry";
         public static readonly ActivitySource ActivitySource = new ActivitySource("OpenTelemetrySample");
 
-        public static void ConfigureOpenTelemetry(this IServiceCollection services, string applicationName)
+        public static void ConfigureOpenTelemetry(this WebApplicationBuilder builder, string applicationName)
         {
-            services.AddOpenTelemetryTracing(t =>
+            var fields = new Dictionary<string, object> { { "pid", Environment.ProcessId } };
+
+            builder.Logging.AddOpenTelemetry(b =>
+            {
+                b.AddConsoleExporter()
+                .AddGenevaLogExporter(g =>
+                {
+                    g.ConnectionString = OpenTelemetryEtwSession;
+                    g.PrepopulatedFields = fields;
+                });
+            });
+
+            builder.Services.AddOpenTelemetryTracing(t =>
                 t.AddSource(ActivitySource.Name)
                 .SetResourceBuilder(ResourceBuilder.CreateDefault()
                     .AddService(applicationName))
@@ -22,8 +38,8 @@ namespace Common
                 .AddConsoleExporter()
                 .AddGenevaTraceExporter(g =>
                 {
-                    g.ConnectionString = "EtwSession=OpenTelemetry";
-                    g.PrepopulatedFields = new Dictionary<string, object> { { "pid", Environment.ProcessId } };
+                    g.ConnectionString = OpenTelemetryEtwSession;
+                    g.PrepopulatedFields = fields;
                 })
                 .AddOtlpExporter(o =>
                 {                    

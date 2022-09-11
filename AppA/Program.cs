@@ -1,5 +1,3 @@
-
-
 using Common;
 
 namespace AppA
@@ -23,7 +21,7 @@ namespace AppA
                 client.BaseAddress = new Uri("https://localhost:7107");
             });
 
-            builder.Services.ConfigureOpenTelemetry("AppA");
+            builder.ConfigureOpenTelemetry("AppA");
 
 
             var app = builder.Build();
@@ -41,6 +39,8 @@ namespace AppA
 
 
             app.MapControllers();
+
+
 
             app.Run();
         }
