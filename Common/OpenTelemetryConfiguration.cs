@@ -35,6 +35,7 @@ namespace Common
                     .AddService(applicationName))
                 .AddHttpClientInstrumentation()
                 .AddAspNetCoreInstrumentation()
+                .AddProcessor(new TraceBaggageEnricher())
                 .AddConsoleExporter()
                 .AddGenevaTraceExporter(g =>
                 {
@@ -47,6 +48,25 @@ namespace Common
                     o.ExportProcessorType = ExportProcessorType.Simple;
                 })
             );
+        }
+
+        private class TraceBaggageEnricher : BaseProcessor<Activity>
+        {
+            public override void OnEnd(Activity data)
+            {
+                var baggageDictionary = Baggage.GetBaggage();
+                foreach (var baggage in baggageDictionary)
+                {
+                    Debug.WriteLine($"{Process.GetCurrentProcess().ProcessName} ENRICHING via Baggage.GetBaggage {baggage.Key}:{baggage.Value}");
+                    data.SetTag(baggage.Key, baggage.Value);
+                }
+
+                foreach(var baggage in data.Baggage)
+                {
+                    Debug.WriteLine($"{Process.GetCurrentProcess().ProcessName} ENRICHING via Activity.Baggage {baggage.Key}:{baggage.Value}");
+                    data.SetTag(baggage.Key, baggage.Value);
+                }
+            }
         }
     }
 }

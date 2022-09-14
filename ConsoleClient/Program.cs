@@ -18,6 +18,7 @@ namespace ConsoleClient
                     services.AddHttpClient("AppAClient", client =>
                     {
                         client.BaseAddress = new Uri("https://localhost:7178");
+                        client.DefaultRequestHeaders.Add("UserID", "pbatum");
                     });
                 });                
 

@@ -1,6 +1,7 @@
 using System.Text.Json;
 using Common;
 using Microsoft.AspNetCore.Mvc;
+using OpenTelemetry;
 
 namespace AppB.Controllers
 {
