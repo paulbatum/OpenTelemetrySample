@@ -21,8 +21,8 @@ namespace AppA.Controllers
         [HttpGet(Name = "GetWeatherForecast")]
         public async Task<IEnumerable<WeatherForecast>> Get([FromHeader] string userID)
         {
-            using var getForecastsActivity = OpenTelemetryConfiguration.ActivitySource.StartActivity("GetForecasts");
-            Baggage.SetBaggage("UserID", userID);
+            //using (var getForecastsActivity = OpenTelemetryConfiguration.ActivitySource.StartActivity("GetForecasts"))
+            //Baggage.SetBaggage("UserID", userID);
 
             using var response1 = await _appBClient.GetAsync("/WeatherForecast");
             response1.EnsureSuccessStatusCode();

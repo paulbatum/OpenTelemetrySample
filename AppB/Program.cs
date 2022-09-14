@@ -15,7 +15,7 @@ namespace AppB
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.ConfigureOpenTelemetry("AppB");
+            //builder.ConfigureOpenTelemetry("AppB");
 
             var app = builder.Build();
 

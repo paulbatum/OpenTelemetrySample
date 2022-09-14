@@ -21,7 +21,7 @@ namespace AppA
                 client.BaseAddress = new Uri("https://localhost:7107");
             });
 
-            builder.ConfigureOpenTelemetry("AppA");
+            //builder.ConfigureOpenTelemetry("AppA");
 
 
             var app = builder.Build();

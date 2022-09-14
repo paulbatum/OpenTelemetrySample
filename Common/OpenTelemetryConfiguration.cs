@@ -19,15 +19,15 @@ namespace Common
         {
             var fields = new Dictionary<string, object> { { "pid", Environment.ProcessId } };
 
-            builder.Logging.AddOpenTelemetry(b =>
-            {
-                b.AddConsoleExporter()
-                .AddGenevaLogExporter(g =>
-                {
-                    g.ConnectionString = OpenTelemetryEtwSession;
-                    g.PrepopulatedFields = fields;
-                });
-            });
+            //builder.Logging.AddOpenTelemetry(b =>
+            //{
+            //    b.AddConsoleExporter()
+            //    .AddGenevaLogExporter(g =>
+            //    {
+            //        g.ConnectionString = OpenTelemetryEtwSession;
+            //        g.PrepopulatedFields = fields;
+            //    });
+            //});
 
             builder.Services.AddOpenTelemetryTracing(t =>
                 t.AddSource(ActivitySource.Name)
@@ -35,7 +35,7 @@ namespace Common
                     .AddService(applicationName))
                 .AddHttpClientInstrumentation()
                 .AddAspNetCoreInstrumentation()
-                .AddProcessor(new TraceBaggageEnricher())
+                //.AddProcessor(new TraceBaggageEnricher())
                 .AddConsoleExporter()
                 .AddGenevaTraceExporter(g =>
                 {
